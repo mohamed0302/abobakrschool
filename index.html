@@ -2,33 +2,43 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>بوابة ولي الأمر — عرض الدرجات والغياب</title>
   <style>
     :root{
       --bg:#f5f7fb;
       --card:#ffffff;
       --primary:#0b6ef6;
+      --primary-dark:#0a5ed9;
       --muted:#6b7280;
       --accent:#e9f5ff;
       --danger:#d9534f;
-      --radius:12px;
-      --gap:14px;
-      font-size:16px;
+      --radius:16px;
+      --gap:16px;
+      --shadow:0 10px 30px rgba(16,24,40,0.08);
+      font-size:18px;
     }
 
     /* Reset & base */
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html,body{
+      height:100%;
+      overflow-x: hidden;
+    }
+    
     body{
       margin:0;
-      padding:20px;
+      padding:16px;
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, "Noto Naskh Arabic", sans-serif;
       background:var(--bg);
       color:#111827;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
+      line-height:1.5;
     }
 
     /* Page wrapper */
@@ -36,199 +46,604 @@
       max-width:1100px;
       margin:0 auto;
       width:100%;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
     .card{
       background:var(--card);
       border-radius:var(--radius);
-      padding:18px;
-      box-shadow:0 8px 28px rgba(16,24,40,0.06);
+      padding:20px;
+      box-shadow:var(--shadow);
+      width:100%;
     }
 
+    /* Header */
     header.head{
       display:flex;
+      flex-direction:column;
       gap:var(--gap);
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:18px;
+      align-items:flex-start;
+      margin-bottom:24px;
+      padding-bottom:16px;
+      border-bottom:1px solid #e6e9ef;
     }
 
-    header .title{
-      font-size:1.15rem;
-      font-weight:700;
+    .school-title{
+      font-size:1.3rem;
+      font-weight:800;
       color:var(--primary);
-      line-height:1.2;
+      line-height:1.3;
+      text-align:center;
+      width:100%;
+      margin:0;
     }
 
-    /* Search area */
-    .search-row{
-      display:grid;
-      grid-template-columns: 1fr auto;
+    .header-subtitle{
+      color:var(--muted);
+      font-size:1rem;
+      text-align:center;
+      width:100%;
+      margin:0;
+      padding:0 10px;
+    }
+
+    .developer-link{
+      display:flex;
+      align-items:center;
+      justify-content:center;
       gap:10px;
-      margin-bottom:12px;
+      padding:12px 16px;
+      border-radius:12px;
+      border:2px solid var(--primary);
+      text-decoration:none;
+      background:var(--accent);
+      width:100%;
+      margin-top:8px;
+    }
+
+    .developer-link svg{
+      flex-shrink:0;
+    }
+
+    .dev-text{
+      font-size:1rem;
+      color:var(--primary);
+      font-weight:700;
+      margin-right:6px;
+    }
+
+    /* Search section */
+    .search-section{
+      margin-bottom:20px;
+      background:linear-gradient(135deg, #f0f7ff, #ffffff);
+      padding:20px;
+      border-radius:var(--radius);
+      border:1px solid #e1e8ff;
+    }
+
+    .search-title{
+      font-size:1.2rem;
+      font-weight:700;
+      color:#1f2937;
+      text-align:center;
+      margin:0 0 16px 0;
+    }
+
+    .search-row{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
     }
 
     input[type="text"].student-code{
       width:100%;
-      padding:12px 14px;
-      border-radius:10px;
-      border:1px solid #e6e9ef;
-      font-size:1rem;
+      padding:18px 16px;
+      border-radius:14px;
+      border:2px solid #d1d9e6;
+      font-size:1.1rem;
       text-align:center;
+      background:#fff;
+      transition:all 0.3s ease;
     }
-    input.student-code:focus{outline:3px solid rgba(11,110,246,0.12);border-color:var(--primary)}
+    
+    input.student-code:focus{
+      outline:none;
+      border-color:var(--primary);
+      box-shadow:0 0 0 4px rgba(11,110,246,0.15);
+      transform:translateY(-2px);
+    }
+    
+    input.student-code::placeholder{
+      color:#9ca3af;
+      font-size:1rem;
+    }
 
     .btn{
-      padding:11px 16px;
-      border-radius:10px;
+      padding:18px 24px;
+      border-radius:14px;
       border:none;
       cursor:pointer;
-      font-weight:600;
-      font-size:0.98rem;
+      font-weight:700;
+      font-size:1.1rem;
+      transition:all 0.3s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
     }
-    .btn-primary{background:var(--primary);color:white}
-    .btn-ghost{background:transparent;border:1px solid #e6e9ef;color:var(--primary)}
+    
+    .btn:active{
+      transform:scale(0.98);
+    }
+    
+    .btn-primary{
+      background:var(--primary);
+      color:white;
+    }
+    
+    .btn-primary:hover{
+      background:var(--primary-dark);
+    }
+    
+    .btn-ghost{
+      background:transparent;
+      border:2px solid #e6e9ef;
+      color:var(--primary);
+    }
+    
+    .btn-ghost:hover{
+      background:var(--accent);
+    }
 
-    .status{margin-bottom:12px;text-align:center;font-weight:600}
+    .status{
+      margin:16px 0;
+      text-align:center;
+      font-weight:600;
+      font-size:1.05rem;
+      padding:12px;
+      border-radius:12px;
+      background:#f8f9fa;
+    }
 
-    /* layout for student + tabs */
+    /* Student info */
     .main-grid{
       display:grid;
       grid-template-columns:1fr;
       gap:var(--gap);
-      margin-top:10px;
+      margin-top:20px;
+    }
+
+    .student-card{
+      background:linear-gradient(135deg, #f8fbff, #ffffff);
+      border:2px solid #e1e8ff;
+      border-radius:var(--radius);
+      padding:20px;
     }
 
     .student-meta{
       display:flex;
-      gap:12px;
+      flex-direction:column;
+      gap:16px;
       align-items:center;
-      justify-content:space-between;
     }
 
-    .student-meta .left{
-      display:flex;gap:12px;align-items:center
+    .student-avatar-section{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      width:100%;
     }
 
     .avatar{
-      width:56px;height:56px;border-radius:10px;background:linear-gradient(180deg,#e6f0ff,#fff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary);
+      width:70px;
+      height:70px;
+      border-radius:18px;
+      background:linear-gradient(135deg, #e6f0ff, #cce0ff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:var(--primary);
+      font-size:1.8rem;
+      flex-shrink:0;
+      border:3px solid white;
+      box-shadow:0 4px 12px rgba(11,110,246,0.15);
     }
 
-    .meta-text h2{margin:0;font-size:1rem}
-    .meta-text p{margin:0;color:var(--muted);font-size:0.95rem}
+    .meta-text{
+      flex:1;
+    }
+    
+    .meta-text h2{
+      margin:0 0 6px 0;
+      font-size:1.3rem;
+      font-weight:800;
+      color:#1f2937;
+    }
+    
+    .meta-text p{
+      margin:0;
+      color:var(--muted);
+      font-size:1.05rem;
+    }
 
-    /* tabs */
+    /* Actions */
+    .action-buttons{
+      display:flex;
+      gap:12px;
+      width:100%;
+      margin-top:10px;
+    }
+    
+    .action-buttons .btn{
+      padding:14px;
+      font-size:1rem;
+    }
+
+    /* Search inside messages */
+    .message-search{
+      margin-top:20px;
+      background:#f8fafc;
+      padding:16px;
+      border-radius:14px;
+    }
+    
+    .message-search label{
+      display:block;
+      font-weight:700;
+      margin-bottom:10px;
+      color:#374151;
+      font-size:1.1rem;
+    }
+    
+    .message-search input{
+      width:100%;
+      padding:16px;
+      border-radius:12px;
+      border:2px solid #e2e8f0;
+      font-size:1.05rem;
+      text-align:center;
+      background:#fff;
+    }
+
+    /* Tabs */
+    .tabs-container{
+      margin-top:20px;
+      background:#fff;
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid #e6e9ef;
+    }
+    
     .tabs{
-      display:flex;gap:8px;flex-wrap:wrap;margin-top:12px
+      display:flex;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      scrollbar-width:none;
+      background:#f8fafc;
+      padding:8px;
+      gap:8px;
     }
-    .tab-btn{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid transparent;cursor:pointer}
-    .tab-btn.active{background:var(--primary);color:white}
+    
+    .tabs::-webkit-scrollbar{
+      display:none;
+    }
+    
+    .tab-btn{
+      padding:16px 20px;
+      border-radius:12px;
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      font-size:1.05rem;
+      white-space:nowrap;
+      flex:1;
+      text-align:center;
+      min-width:120px;
+      transition:all 0.3s ease;
+      color:#4b5563;
+    }
+    
+    .tab-btn.active{
+      background:var(--primary);
+      color:white;
+      box-shadow:0 4px 12px rgba(11,110,246,0.2);
+    }
 
-    /* content panels */
-    .panel{display:none;margin-top:12px}
-    .panel.active{display:block}
+    /* Panels */
+    .panels-container{
+      padding:20px;
+    }
+    
+    .panel{
+      display:none;
+      animation:fadeIn 0.4s ease;
+    }
+    
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(10px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+    
+    .panel.active{
+      display:block;
+    }
 
+    /* Messages */
     .list-item{
       background:#fbfdff;
-      border-radius:10px;
-      padding:14px;
-      border-left:4px solid var(--primary);
-      margin-bottom:18px; /* زيادة المسافة بين الرسائل */
+      border-radius:14px;
+      padding:20px;
+      border-right:6px solid var(--primary);
+      margin-bottom:20px;
       position:relative;
+      box-shadow:0 4px 12px rgba(0,0,0,0.04);
+      border:1px solid #e6f0ff;
+    }
+    
+    .list-item:last-child{
+      margin-bottom:0;
+    }
+    
+    .list-item pre{
+      white-space:pre-wrap;
+      font-family:inherit;
+      margin:0;
+      font-size:1.05rem;
+      line-height:1.6;
+      color:#1f2937;
+    }
+    
+    .timestamp{
+      font-size:0.95rem;
+      color:var(--muted);
+      margin-top:12px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding-top:12px;
+      border-top:1px solid #e6e9ef;
+    }
+    
+    .timestamp::before{
+      content:"🕒";
+      font-size:0.9rem;
     }
 
-    /* فاصل واضح أسفل كل رسالة */
-    .list-item::after{
-      content:"";
+    .empty-state{
+      text-align:center;
+      padding:40px 20px;
+      color:var(--muted);
+      font-size:1.1rem;
+      background:#f8fafc;
+      border-radius:14px;
+      border:2px dashed #e2e8f0;
+    }
+    
+    .empty-state::before{
+      content:"📄";
+      font-size:2.5rem;
       display:block;
-      width:100%;
-      height:2px;
-      background:linear-gradient(to right, transparent, #d0d7e6, transparent);
-      margin-top:14px;
-      border-radius:2px;
+      margin-bottom:16px;
+      opacity:0.5;
     }
-    .list-item pre{white-space:pre-wrap;font-family:inherit;margin:0}
-    .timestamp{font-size:0.85rem;color:var(--muted);margin-top:8px}
 
-    /* responsive columns for larger screens */
-    @media(min-width:760px){
-      .main-grid{grid-template-columns:320px 1fr}
-      .student-meta{flex-direction:column;align-items:flex-start}
+    /* Footer note */
+    .footer-note{
+      margin-top:24px;
+      padding:16px;
+      background:#fff8f0;
+      border-radius:14px;
+      border-right:4px solid #f59e0b;
+      text-align:center;
+      font-size:1rem;
+      color:#92400e;
+      font-weight:600;
+    }
+
+    /* Responsive */
+    @media(min-width:480px){
+      .search-row{
+        flex-direction:row;
+      }
+      
+      .search-row .student-code{
+        flex:1;
+      }
+      
+      .search-row .btn{
+        width:auto;
+        min-width:120px;
+      }
+      
+      .action-buttons{
+        flex-direction:row;
+      }
+    }
+
+    @media(min-width:768px){
+      body{
+        padding:20px;
+      }
+      
+      .card{
+        padding:30px;
+      }
+      
+      .main-grid{
+        grid-template-columns:1.2fr 2fr;
+        gap:24px;
+      }
+      
+      header.head{
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+      }
+      
+      .school-title{
+        text-align:right;
+        width:auto;
+      }
+      
+      .header-subtitle{
+        display:none;
+      }
+      
+      .developer-link{
+        width:auto;
+        margin-top:0;
+      }
+      
+      .tabs{
+        flex-wrap:wrap;
+        overflow-x:visible;
+      }
     }
 
     @media(min-width:1024px){
-      .wrap{max-width:1100px}
-      .card{padding:22px}
+      :root{
+        font-size:17px;
+      }
+      
+      .card{
+        padding:32px;
+      }
+      
+      .student-meta{
+        flex-direction:row;
+        align-items:center;
+        justify-content:space-between;
+      }
+      
+      .action-buttons{
+        width:auto;
+        margin-top:0;
+      }
+      
+      .btn{
+        padding:16px 28px;
+      }
     }
 
-    /* accessibility focus */
-    button:focus, .tab-btn:focus{outline:3px solid rgba(11,110,246,0.14)}
+    /* Accessibility */
+    button:focus, 
+    .tab-btn:focus,
+    input:focus{
+      outline:3px solid rgba(11,110,246,0.3);
+      outline-offset:2px;
+    }
 
+    /* Loading animation */
+    .loading{
+      display:inline-block;
+      width:24px;
+      height:24px;
+      border:3px solid rgba(255,255,255,0.3);
+      border-radius:50%;
+      border-top-color:white;
+      animation:spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin{
+      to{transform:rotate(360deg);}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <header class="head">
-        <div class="title">مدرسة أبو بكر الصديق الثانوية بنات — بوابة ولي الأمر</div>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="text-align:left;color:var(--muted);font-size:0.95rem">اعرف غياب ودرجات ابنتك في المدرسة من خلال كود الطالبه </div>
-          <!-- LinkedIn icon: ضع رابط صفحتك في href لإظهار صفحة المبرمج -->
-          <a id="linkedin-link" href="https://www.linkedin.com/in/mohamed-kassem-3a37b9375?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" title="صفحة المبرمج على لينكدإن" style="display:inline-flex;align-items:center;padding:8px;border-radius:8px;border:1.8px solid blue;text-decoration:none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6C1.1 6 0 4.88 0 3.5C0 2.12 1.12 1 2.5 1C3.88 1 4.98 2.12 4.98 3.5Z" transform="translate(3 4)" fill="#0A66C2"></path>
-              <path d="M6 8H2V20H6V8Z" transform="translate(3 3)" fill="#0A66C2"></path>
-              <path d="M10 8H7V20H10V14.5C10 12 16 11.5 16 16V20H20V14C20 8 13 7.5 10 10.5V8Z" transform="translate(1 2)" fill="#0A66C2"></path>
-            </svg>
-            <span style="font-size:0.9rem;color:var(--primary);font-weight:600;margin-right:6px">المطور</span>
-          </a>
+        <div>
+          <h1 class="school-title">مدرسة أبو بكر الصديق الثانوية بنات</h1>
+          <p class="header-subtitle">بوابة ولي الأمر — اعرف غياب ودرجات ابنتك في المدرسة من خلال كود الطالبة</p>
         </div>
+        <a class="developer-link" href="https://www.linkedin.com/in/mohamed-kassem-3a37b9375" target="_blank" rel="noopener" title="صفحة المبرمج على لينكدإن">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6C1.1 6 0 4.88 0 3.5C0 2.12 1.12 1 2.5 1C3.88 1 4.98 2.12 4.98 3.5Z" transform="translate(3 4)" fill="#0A66C2"></path>
+            <path d="M6 8H2V20H6V8Z" transform="translate(3 3)" fill="#0A66C2"></path>
+            <path d="M10 8H7V20H10V14.5C10 12 16 11.5 16 16V20H20V14C20 8 13 7.5 10 10.5V8Z" transform="translate(1 2)" fill="#0A66C2"></path>
+          </svg>
+          <span class="dev-text">المطور</span>
+        </a>
       </header>
 
-      <div class="search-row">
-        <input type="text" class="student-code" id="student-code" placeholder="أدخل كود الطالب هنا (اضغط Enter للبحث)">
-        <button id="search-btn" class="btn btn-primary">بحث</button>
+      <div class="search-section">
+        <h2 class="search-title">🔍 ابحث عن الطالبة باستخدام الكود</h2>
+        <div class="search-row">
+          <input type="text" class="student-code" id="student-code" placeholder="أدخل كود الطالبة هنا" inputmode="numeric">
+          <button id="search-btn" class="btn btn-primary">
+            <span id="btn-text">بحث</span>
+            <div id="btn-loading" class="loading" style="display:none"></div>
+          </button>
+        </div>
+        <div class="status" id="status" aria-live="polite"></div>
       </div>
 
-      <div id="status" class="status" aria-live="polite"></div>
-
       <div class="main-grid" id="results" style="display:none">
-        <aside class="card" id="left-card">
+        <aside class="student-card" id="left-card">
           <div class="student-meta">
-            <div class="left">
-              <div class="avatar" id="student-avatar">S</div>
+            <div class="student-avatar-section">
+              <div class="avatar" id="student-avatar">?</div>
               <div class="meta-text">
                 <h2 id="student-name">—</h2>
                 <p id="student-class">الصف — | الفصل —</p>
               </div>
             </div>
-            <div style="text-align:left">
-              <button id="select-all" class="btn btn-ghost" title="تحديد كل الرسائل">تحديد الكل</button>
+            <div class="action-buttons">
+              <button id="select-all" class="btn btn-ghost" title="تحديد كل الرسائل">
+                📋 تحديد الكل
+              </button>
             </div>
           </div>
 
-          <div style="margin-top:12px">
-            <div style="font-weight:700;margin-bottom:8px">البحث داخل الرسائل</div>
-            <input id="global-search" type="text" placeholder="ابحث عن نص داخل الرسائل" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;text-align:center">
+          <div class="message-search">
+            <label for="global-search">🔎 البحث داخل الرسائل</label>
+            <input id="global-search" type="text" placeholder="اكتب للبحث في الرسائل...">
           </div>
         </aside>
 
-        <section>
+        <section class="tabs-container">
           <div class="tabs" role="tablist" aria-label="أقسام الطالب">
-            <button class="tab-btn active" data-target="grades">الدرجات</button>
-            <button class="tab-btn" data-target="absence">الغياب</button>
-            <button class="tab-btn" data-target="reports">التقارير</button>
-            <button class="tab-btn" data-target="messages">رسائل عامة</button>
+            <button class="tab-btn active" data-target="grades">
+              📊 الدرجات
+            </button>
+            <button class="tab-btn" data-target="absence">
+              📅 الغياب
+            </button>
+            <button class="tab-btn" data-target="reports">
+              📋 التقارير
+            </button>
+            <button class="tab-btn" data-target="messages">
+              💬 الرسائل
+            </button>
           </div>
 
-          <div id="grades" class="panel active"></div>
-          <div id="absence" class="panel"></div>
-          <div id="reports" class="panel"></div>
-          <div id="messages" class="panel"></div>
+          <div class="panels-container">
+            <div id="grades" class="panel active">
+              <div class="empty-state">لا توجد درجات مسجلة حالياً</div>
+            </div>
+            <div id="absence" class="panel">
+              <div class="empty-state">لا يوجد غياب مسجل حالياً</div>
+            </div>
+            <div id="reports" class="panel">
+              <div class="empty-state">لا توجد تقارير حالياً</div>
+            </div>
+            <div id="messages" class="panel">
+              <div class="empty-state">لا توجد رسائل عامة حالياً</div>
+            </div>
+          </div>
         </section>
       </div>
 
-      <p style="margin-top:14px;color:var(--muted);font-size:0.95rem">ملاحظه : اي خطا في البيانات الرجاء الرجوء لادارة المدرسه </p>
+      <div class="footer-note">
+        ملاحظة: أي خطأ في البيانات الرجاء الرجوع لإدارة المدرسة
+      </div>
     </div>
   </div>
 
@@ -237,19 +652,22 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
   <script>
-    // ضع إعدادات firebaseConfig هنا
     const firebaseConfig = {
-  apiKey: "AIzaSyAwJm-zAOFMpvlyrm4BbCnH8O7kTBMVkY8",
-  authDomain: "school-notifier-7e137.firebaseapp.com",
-  databaseURL: "https://school-notifier-7e137-default-rtdb.firebaseio.com",
-  projectId: "school-notifier-7e137",
-  storageBucket: "school-notifier-7e137.firebasestorage.app",
-  messagingSenderId: "1098528315414",
-  appId: "1:1098528315414:web:701c24265ca4c0b4097d37"
+      apiKey: "AIzaSyAwJm-zAOFMpvlyrm4BbCnH8O7kTBMVkY8",
+      authDomain: "school-notifier-7e137.firebaseapp.com",
+      databaseURL: "https://school-notifier-7e137-default-rtdb.firebaseio.com",
+      projectId: "school-notifier-7e137",
+      storageBucket: "school-notifier-7e137.firebasestorage.app",
+      messagingSenderId: "1098528315414",
+      appId: "1:1098528315414:web:701c24265ca4c0b4097d37"
     };
 
-    // init
-    try{firebase.initializeApp(firebaseConfig);}catch(e){/* ignore if already init */}
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch (e) {
+      console.log("Firebase already initialized");
+    }
+    
     const db = firebase.database ? firebase.database() : null;
 
     // عناصر DOM
@@ -260,85 +678,261 @@
     const nameEl = document.getElementById('student-name');
     const classEl = document.getElementById('student-class');
     const avatarEl = document.getElementById('student-avatar');
+    const btnText = document.getElementById('btn-text');
+    const btnLoading = document.getElementById('btn-loading');
     const panels = document.querySelectorAll('.panel');
     let currentRef = null;
 
-    // تبويب
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    // تحسين التبويبات للشاشات الصغيرة
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        panels.forEach(p=>p.classList.remove('active'));
-        const t = document.getElementById(btn.dataset.target);
-        if(t) t.classList.add('active');
-      })
-    })
-
-    // البحث
-    function showStatus(text,color=''){
-      statusEl.textContent = text;
-      statusEl.style.color = color||'';
-    }
-
-    function clearPanels(){panels.forEach(p=>p.innerHTML='');}
-
-    function renderList(data, containerId, emptyMessage){
-      const node = document.getElementById(containerId);
-      node.innerHTML='';
-      if(!data){ node.innerHTML = `<div style='color:var(--muted)'>${emptyMessage}</div>`; return }
-      const keys = Object.keys(data).reverse();
-      keys.forEach(k=>{
-        const item = data[k];
-        const div = document.createElement('div'); div.className='list-item';
-        const pre = document.createElement('pre'); pre.textContent = item.text || item.msg || JSON.stringify(item);
-        const t = document.createElement('div'); t.className='timestamp';
-        const date = item.timestamp ? new Date(item.timestamp) : new Date();
-        t.textContent = `تاريخ الإرسال: ${date.toLocaleString('ar-EG',{dateStyle:'medium',timeStyle:'short'})}`;
-        div.appendChild(pre); div.appendChild(t); node.appendChild(div);
-      })
-    }
-
-    function attachListener(studentCode){
-      if(!db){ showStatus('Firebase غير مهيأ — أضف firebaseConfig في الكود', 'red'); return }
-      if(currentRef) currentRef.off();
-      currentRef = db.ref('students/' + studentCode);
-      showStatus('جاري تحميل البيانات...', 'black');
-      currentRef.on('value', snap=>{
-        if(!snap.exists()){ showStatus('لم يتم العثور على طالب بهذا الكود.', 'red'); resultsEl.style.display='none'; return }
-        const data = snap.val();
-        const meta = data.meta || {};
-        nameEl.textContent = meta.الاسم || '—';
-        classEl.textContent = `الصف: ${meta.الصف || '—'} | الفصل: ${meta.الفصل || '—'}`;
-        avatarEl.textContent = (meta.الاسم ? meta.الاسم.trim()[0] : 'S');
-
-        renderList(data.grades, 'grades', 'لا توجد درجات مسجلة حالياً.');
-        renderList(data.absence, 'absence', 'لا يوجد غياب مسجل حالياً.');
-        renderList(data.reports, 'reports', 'لا توجد تقارير حالياً.');
-        renderList(data.messages, 'messages', 'لا توجد رسائل عامة حالياً.');
-
-        resultsEl.style.display='grid';
-        showStatus('');
-      }, err=>{ console.error(err); showStatus('حدث خطأ أثناء الاتصال بقاعدة البيانات.', 'red') })
-    }
-
-    searchBtn.addEventListener('click', ()=>{ const code = codeInput.value.trim(); if(!code){ showStatus('الرجاء إدخال كود الطالب.', 'red'); return } attachListener(code); })
-    codeInput.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); searchBtn.click(); } })
-
-    // تحسينات اختيارية
-    document.getElementById('select-all').addEventListener('click', ()=>{
-      // مثال: يميز كل العناصر (يمكنك تعديل لتفعيل إرسال أو نسخ)
-      document.querySelectorAll('.list-item').forEach(it=>it.style.backgroundColor='#fff8e6');
-    })
-
-    // بحث داخل الرسائل
-    document.getElementById('global-search').addEventListener('input', (e)=>{
-      const q = e.target.value.trim().toLowerCase();
-      document.querySelectorAll('.list-item').forEach(it=>{
-        const txt = it.innerText.toLowerCase();
-        it.style.display = q ? (txt.includes(q) ? 'block' : 'none') : 'block';
-      })
+        panels.forEach(p => p.classList.remove('active'));
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.classList.add('active');
+        
+        // إضافة تأثير للشاشات الصغيرة
+        if (window.innerWidth < 768) {
+          document.querySelector('.tabs-container').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
     });
 
+    // تحسين البحث
+    function showStatus(text, color = '', isError = false) {
+      statusEl.textContent = text;
+      statusEl.style.color = color || (isError ? '#dc2626' : '#1f2937');
+      statusEl.style.background = isError ? '#fef2f2' : '#f8fafc';
+      statusEl.style.border = isError ? '1px solid #fecaca' : '1px solid #e2e8f0';
+    }
+
+    function setLoading(loading) {
+      if (loading) {
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'block';
+        searchBtn.disabled = true;
+        searchBtn.style.opacity = '0.8';
+      } else {
+        btnText.style.display = 'block';
+        btnLoading.style.display = 'none';
+        searchBtn.disabled = false;
+        searchBtn.style.opacity = '1';
+      }
+    }
+
+    function renderList(data, containerId, emptyMessage) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      
+      if (!data || Object.keys(data).length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">${emptyMessage}</div>
+        `;
+        return;
+      }
+      
+      const keys = Object.keys(data).reverse();
+      keys.forEach(key => {
+        const item = data[key];
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        
+        const pre = document.createElement('pre');
+        pre.textContent = item.text || item.msg || item.content || JSON.stringify(item, null, 2);
+        
+        const timestamp = document.createElement('div');
+        timestamp.className = 'timestamp';
+        
+        const date = item.timestamp ? new Date(item.timestamp) : new Date();
+        timestamp.textContent = `تاريخ الإرسال: ${date.toLocaleString('ar-EG', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        })}`;
+        
+        div.appendChild(pre);
+        div.appendChild(timestamp);
+        container.appendChild(div);
+      });
+    }
+
+    function attachListener(studentCode) {
+      if (!db) {
+        showStatus('Firebase غير مهيأ — تحقق من إعدادات الاتصال', '', true);
+        return;
+      }
+      
+      if (currentRef) {
+        currentRef.off();
+      }
+      
+      currentRef = db.ref('students/' + studentCode);
+      setLoading(true);
+      showStatus('جاري البحث عن بيانات الطالبة...', '#0b6ef6');
+      
+      currentRef.on('value', snap => {
+        setLoading(false);
+        
+        if (!snap.exists()) {
+          showStatus('❌ لم يتم العثور على طالبة بهذا الكود', '', true);
+          resultsEl.style.display = 'none';
+          return;
+        }
+        
+        const data = snap.val();
+        const meta = data.meta || {};
+        
+        // تحديث بيانات الطالبة
+        nameEl.textContent = meta.الاسم || '—';
+        classEl.textContent = `الصف: ${meta.الصف || '—'} | الفصل: ${meta.الفصل || '—'}`;
+        avatarEl.textContent = meta.الاسم ? meta.الاسم.trim()[0] : '?';
+        avatarEl.style.background = 'linear-gradient(135deg, #4f46e5, #7c3aed)';
+        
+        // عرض البيانات
+        renderList(data.grades, 'grades', 'لا توجد درجات مسجلة حالياً');
+        renderList(data.absence, 'absence', 'لا يوجد غياب مسجل حالياً');
+        renderList(data.reports, 'reports', 'لا توجد تقارير حالياً');
+        renderList(data.messages, 'messages', 'لا توجد رسائل عامة حالياً');
+        
+        // عرض النتائج
+        resultsEl.style.display = 'grid';
+        showStatus(`✅ تم العثور على بيانات الطالبة: ${meta.الاسم || 'غير معروف'}`, '#059669');
+        
+        // التمرير للنتائج في الشاشات الصغيرة
+        if (window.innerWidth < 768) {
+          setTimeout(() => {
+            resultsEl.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 300);
+        }
+      }, error => {
+        setLoading(false);
+        console.error('Firebase error:', error);
+        showStatus('❌ حدث خطأ أثناء الاتصال بقاعدة البيانات', '', true);
+      });
+    }
+
+    // أحداث البحث
+    searchBtn.addEventListener('click', () => {
+      const code = codeInput.value.trim();
+      if (!code) {
+        showStatus('⚠️ الرجاء إدخال كود الطالبة', '', true);
+        codeInput.focus();
+        return;
+      }
+      
+      if (!/^\d+$/.test(code)) {
+        showStatus('⚠️ الكود يجب أن يحتوي على أرقام فقط', '', true);
+        return;
+      }
+      
+      attachListener(code);
+    });
+
+    codeInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchBtn.click();
+      }
+    });
+
+    // إضافة تأثير عند التركيز على حقل الإدخال
+    codeInput.addEventListener('focus', () => {
+      codeInput.style.transform = 'translateY(-2px)';
+    });
+    
+    codeInput.addEventListener('blur', () => {
+      codeInput.style.transform = 'translateY(0)';
+    });
+
+    // تحديث زر تحديد الكل
+    document.getElementById('select-all').addEventListener('click', () => {
+      const items = document.querySelectorAll('.list-item');
+      let allSelected = true;
+      
+      items.forEach(item => {
+        if (!item.style.backgroundColor || item.style.backgroundColor === 'rgb(255, 248, 230)') {
+          allSelected = false;
+        }
+      });
+      
+      items.forEach(item => {
+        if (allSelected) {
+          item.style.backgroundColor = '';
+          item.style.boxShadow = '0 4px 12px rgba(0,0,0,0.04)';
+        } else {
+          item.style.backgroundColor = '#fff8e6';
+          item.style.boxShadow = '0 6px 16px rgba(245, 158, 11, 0.15)';
+        }
+      });
+      
+      const btn = document.getElementById('select-all');
+      btn.innerHTML = allSelected ? '📋 تحديد الكل' : '✅ إلغاء التحديد';
+      
+      showStatus(allSelected ? 'تم إلغاء تحديد جميع الرسائل' : 'تم تحديد جميع الرسائل', '', false);
+    });
+
+    // بحث داخل الرسائل
+    document.getElementById('global-search').addEventListener('input', (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      const items = document.querySelectorAll('.list-item');
+      let foundCount = 0;
+      
+      items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        const isVisible = !query || text.includes(query);
+        item.style.display = isVisible ? 'block' : 'none';
+        
+        if (isVisible) {
+          foundCount++;
+          
+          // تمييز النص المطلوب
+          if (query) {
+            const pre = item.querySelector('pre');
+            const originalText = pre.textContent;
+            const highlightedText = originalText.replace(
+              new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'),
+              '<mark style="background:#fef3c7;padding:2px 4px;border-radius:4px;">$1</mark>'
+            );
+            pre.innerHTML = highlightedText;
+          }
+        }
+      });
+      
+      // تحديث حالة البحث
+      if (query) {
+        showStatus(`تم العثور على ${foundCount} نتيجة`, '', false);
+      } else {
+        showStatus('', '', false);
+        
+        // إعادة النص الأصلي
+        document.querySelectorAll('.list-item pre').forEach(pre => {
+          pre.innerHTML = pre.textContent;
+        });
+      }
+    });
+
+    // تحسين تجربة الهاتف
+    document.addEventListener('touchstart', () => {}, { passive: true });
+    
+    // تحسين ظهور لوحة المفاتيح على الهواتف
+    if ('visualViewport' in window) {
+      window.visualViewport.addEventListener('resize', () => {
+        if (window.visualViewport.height < 300) {
+          document.body.style.padding = '10px';
+        }
+      });
+    }
+
+    // التركيز التلقائي على حقل البحث
+    setTimeout(() => {
+      codeInput.focus();
+    }, 500);
   </script>
 </body>
 </html>
