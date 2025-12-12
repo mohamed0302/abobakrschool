@@ -338,7 +338,25 @@
         it.style.display = q ? (txt.includes(q) ? 'block' : 'none') : 'block';
       })
     });
+@media (max-width: 480px){
 
+  .list-item{
+    padding: 20px;
+    font-size: 1.15rem;
+  }
+
+  .list-item pre{
+    font-size: 1.1rem;
+    white-space: pre-wrap; /* علشان يكسر السطر في الشاشة الصغيرة */
+    line-height: 1.7;
+  }
+
+  .list-item .timestamp{
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+}
   </script>
 </body>
 </html>
+
